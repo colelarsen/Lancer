@@ -328,7 +328,7 @@ end
 function dead(obj,color,alt_click) createStatusButton("clickedDead","Dead","dead",{0,0,0},color) end
 function downAndOut(obj,color,alt_click) createStatusButton("clickedDownAndOut","Down and Out","downAndOut",{0.7,0,0},color) end
 function engaged(obj,color,alt_click) createStatusButton("clickedEngaged","Engaged","engaged",{0.7,0.7,0},color) end
-function exposed(obj,color,alt_click) createStatusButton("clickedExposed","Exposed","exposed",{0.7,0.35,0},color) end
+function exposed(obj,color,alt_click) createStatusButton("clickedExposed","Exposed","exposed",{0.7,0.35,0},color) attachParticleEffect("exposed") end
 function hidden(obj,color,alt_click) createStatusButton("clickedHidden","Hidden","hidden",{0,0.7,0},color) end
 function hiddenFromPlayers(obj,color,alt_click) 
   self.attachInvisibleHider(guid, true, Player.getColors())
@@ -345,7 +345,7 @@ function shredded(obj,color,alt_click) createStatusButton("clickedShredded","Shr
 function slowed(obj,color,alt_click) createStatusButton("clickedSlowed","Slowed","slowed",{0.7,0,0},color) end
 function stunned(obj,color,alt_click) createStatusButton("clickedStunned","Stunned","stunned",{0.7,0,0},color) end
 function grappled(obj,color,alt_click) createStatusButton("clickedGrappled","Grappled","grappled",{0.7,0,0},color) end
-function exemplarMark(obj,color,alt_click) createStatusButton("clickedExemplarMark","Exemplar's Mark","exemplarMark",{0.7,0,0},color) end
+function exemplarMark(obj,color,alt_click) createStatusButton("clickedExemplarMark","Exemplar's Mark","exemplarMark",{0.7,0,0},color) attachParticleEffect("marked") end
 --Special function to create a status with a counter
 function burning(obj,color,alt_click)
   cleanupMenu()
@@ -441,7 +441,11 @@ function clickedEngaged(obj,color,alt_click)
   if alt_click then broadcastToAll(statuses["engaged"].effects, color) else clickedStatus(obj,color,alt_click,"Engaged") end
 end
 function clickedExposed(obj,color,alt_click)
-  if alt_click then broadcastToAll(statuses["exposed"].effects, color) else clickedStatus(obj,color,alt_click,"Exposed") end
+  if alt_click then 
+    broadcastToAll(statuses["exposed"].effects, color) 
+  else 
+    getRidOfAttachment("exposed")
+    clickedStatus(obj,color,alt_click,"Exposed") end
 end
 function clickedHidden(obj,color,alt_click)
   if alt_click then broadcastToAll(statuses["hidden"].effects, color) else clickedStatus(obj,color,alt_click,"Hidden") end
@@ -488,7 +492,12 @@ function clickedGrappled(obj,color,alt_click)
   if alt_click then broadcastToAll(statuses["grappled"].effects, color) else clickedStatus(obj,color,alt_click,"Grappled") end
 end
 function clickedExemplarMark(obj,color,alt_click)
-  if alt_click then broadcastToAll(statuses["exemplarMark"].effects, color) else clickedStatus(obj,color,alt_click,"Exemplar's Mark") end
+  if alt_click then 
+    broadcastToAll(statuses["exemplarMark"].effects, color) 
+  else 
+    getRidOfAttachment("marked")
+    clickedStatus(obj,color,alt_click,"Exemplar's Mark") 
+  end
 end
 
 --Function to remove the counter from Burning then remove the status button.
@@ -505,6 +514,21 @@ end
 --Particle effects
 curAttachments = {}
 particleEffects={}
+
+particleEffects["marked"] = 
+{
+  type = 1,
+  material = 1,
+  assetbundle = "http://cloud-3.steamusercontent.com/ugc/2065503862647866511/465BD44DAF1CEE02B080E02632F0F3421C6BAA4A/",
+  assetbundle_secondary = ""
+}
+particleEffects["exposed"] = 
+{
+  type = 1,
+  material = 1,
+  assetbundle = "http://cloud-3.steamusercontent.com/ugc/2065503862647882019/A2D86238B47FF7038D11DC0785004F53CB9395BC/",
+  assetbundle_secondary = ""
+}
 particleEffects["corebonus"] = 
 {
   type = 1,
